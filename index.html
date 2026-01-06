@@ -1,0 +1,55 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Todo</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>My todo List</h1>
+
+        <div class="input">
+            <button onclick="toggle()" class="addbtn">I want to add a task</button>
+
+            <div class="container1">
+                <div>
+                    <label for="task">task description</label>
+                    <input type="text" name="task-input" id="task" class="task"> 
+                </div>
+                <div>
+                    <label for="date">task due date</label>
+                    <input type="datetime-local" name="datepicker" id="date" class="date">
+                </div>
+                <div>
+                    <button onclick="addatask()" class="finaladdbtn">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sort">
+            <div class="search">
+                <input type="text" class="searchbox">
+                <button onclick="callsearch()">search</button>
+            </div>
+            <button class="sortbtndate" onclick="sortbydate()">sort by date</button>
+            <button class="sortbtnname" onclick="sortbyname()">sort by name</button>
+        </div>
+
+        <!-- <h3>for task to be editted</h3> -->
+        <!-- <div class="task-edit"> -->
+                <!-- <label for="task-edit"></label>
+                <input type="text" name="task-input" id="task-edit" class="taskedit"> 
+                <label for="date-edit"></label>
+                <input type="datetime-local" name="datepicker" id="date-edit" class="dateedit">
+                <button onclick="edittask()">Save</button> -->
+        <!-- </div> -->
+        <h2>Your Tasks here</h2>
+        
+        <div class="task-list">
+            
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+    </html>
