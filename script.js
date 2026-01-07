@@ -1,78 +1,53 @@
-
 let container1 = document.querySelector('.container1');
-let tasklist = document.querySelector('.task-list');
+let taskList = document.querySelector('.task-list');
 
 // task inputs
-let taskdescription = document.querySelector('.task');
-let taskdate = document.querySelector('.date');
+let taskDescription = document.querySelector('.task');
+let taskDate = document.querySelector('.date');
 
 container1.classList.add('hidden');
 
 let todo = [];
 // localStorage.setItem("mytask",[]);
 let id = 1;
-let currentid;
+let currentId;
 
 window.onload = () => {
-    let actualformat = JSON.parse(localStorage.getItem("mytask"));
-    console.log(actualformat);
-    // console.log(typeof(actualformat));
-    // console.log(actualformat.length);
+    let actualFormat = JSON.parse(localStorage.getItem("mytask"));
 
-    if (actualformat.length != 0) {
-        for (let x in actualformat) {
-            if (actualformat[x][0] > id) {
-                id = actualformat[x][0];
+    if (actualFormat.length != 0) {
+        for (let x in actualFormat) {
+            if (actualFormat[x][0] > id) {
+                id = actualFormat[x][0];
             }
         }
         id++;
-        for (let x in actualformat) {
-            todo.push([actualformat[x][0], actualformat[x][1], actualformat[x][2], actualformat[x][3]]);
-            displaytask(actualformat[x][0], actualformat[x][1], actualformat[x][2], actualformat[x][3]);
+        for (let x in actualFormat) {
+            todo.push([actualFormat[x][0], actualFormat[x][1], actualFormat[x][2], actualFormat[x][3]]);
+            displayTask(actualFormat[x][0], actualFormat[x][1], actualFormat[x][2], actualFormat[x][3]);
         }
     }
-
-    // console.log(localStorage.getItem("mytask"));
 }
 
 let temp = []
 // add task
-function addatask() {
-    let taskname = taskdescription.value;
-    let taskdatevalue = taskdate.value;
-    todo.push([id, taskname, taskdatevalue, false]);
+function addTask() {
+    let taskName = taskDescription.value;
+    let taskDateValue = taskDate.value;
+    todo.push([id, taskName, taskDateValue, false]);
 
-    // temp.push([ id, taskname, taskdatevalue ]);
-    // localStorage.setItem("mytask", todo);
     localStorage.setItem("mytask", JSON.stringify(todo));
-    // localStorage.setItem(id , [taskname,taskdatevalue]);
 
     console.log(todo);
-    displaytask(id, taskname, taskdatevalue, false);
+    displayTask(id, taskName, taskDateValue, false);
     toggle()
     id++;
 
     // clearing the value
-    taskdescription.value = "";
-    taskdate.value = "";
+    taskDescription.value = "";
+    taskDate.value = "";
     // task-list
 }
-
-// let taskedit = document.querySelector('.task-edit');
-// taskedit.classList.add('hidden');
-
-function toggleedit() {
-    if (taskedit.hasAttribute('class', 'hidden')) {
-        taskedit.classList.remove('hidden');
-        taskedit.classList.add('visible');
-    }
-    else {
-        taskedit.classList.remove('visible');
-        taskedit.classList.add('hidden');
-    }
-
-}
-
 
 function toggle() {
     if (container1.hasAttribute('class', 'hidden')) {
@@ -87,46 +62,39 @@ function toggle() {
 
 
 
-function displaytask(id, taskname, taskdatevalue, status) {
+function createNewContainerForTask(id, taskName, taskDateValue, status) {
 
-    // for(let x in todo){
-    // console.log(x);
-    // console.log(todo[x].id);
-    // console.log(todo[x].id[0]);
-    // console.log(x.id[0]);
-    // console.log(x.id[1]);
-    //
-    let newinnercontainer = document.createElement('div');
-    let taskspan = document.createElement('span');
-    let editbutton = document.createElement('button');
-    let deletebutton = document.createElement('button');
-    let markascompleted = document.createElement('button');
+    let newInnerContainer = document.createElement('div');
+    let taskSpan = document.createElement('span');
+    let editButton = document.createElement('button');
+    let deleteButton = document.createElement('button');
+    let markAsCompleted = document.createElement('button');
 
-    newinnercontainer.classList.add('innercontainer');
-    tasklist.appendChild(newinnercontainer);
+    newInnerContainer.classList.add('innercontainer');
+    taskList.appendChild(newInnerContainer);
 
-    taskspan.classList.add('taskspan');
-    taskspan.innerHTML = taskname;
+    taskSpan.classList.add('taskspan');
+    taskSpan.innerHTML = taskName;
 
 
     // edit button
-    editbutton.classList.add('editbtn');
-    editbutton.addEventListener("click", () => {
+    editButton.classList.add('editbtn');
+    editButton.addEventListener("click", () => {
         let inp1 = document.createElement('input');
-        inp1.value = taskname;
+        inp1.value = taskName;
         inp1.style.width = '3rem';
         let inp2 = document.createElement('input');
         inp2.type = 'datetime-local';
         inp2.style.width = '3rem';
-        inp2.value = taskdatevalue;
-        let savebtn = document.createElement('button');
-        savebtn.innerText = "Save";
+        inp2.value = taskDateValue;
+        let saveBtn = document.createElement('button');
+        saveBtn.innerText = "Save";
 
-        newinnercontainer.replaceChild(savebtn, editbutton);
-        newinnercontainer.replaceChild(inp2, taskspan);
-        newinnercontainer.prepend(inp1);
+        newInnerContainer.replaceChild(saveBtn, editButton);
+        newInnerContainer.replaceChild(inp2, taskSpan);
+        newInnerContainer.prepend(inp1);
 
-        savebtn.addEventListener("click", () => {
+        saveBtn.addEventListener("click", () => {
             for (let x in todo) {
                 if (todo[x][0] == id) {
                     todo[x][1] = inp1.value;
@@ -136,40 +104,40 @@ function displaytask(id, taskname, taskdatevalue, status) {
             localStorage.setItem("mytask", JSON.stringify(todo));
             console.log(todo);
 
-            displaytaskagain();
+            displayTask();
         });
     });
-    editbutton.setAttribute('id', id);
-    editbutton.innerHTML = "edit"
+    editButton.setAttribute('id', id);
+    editButton.innerHTML = "edit"
 
     // delete button
-    deletebutton.classList.add('deletebtn');
-    deletebutton.setAttribute('id', id);
-    deletebutton.addEventListener("click", () => { calldelete(id) });
-    deletebutton.innerHTML = "delete";
+    deleteButton.classList.add('deletebtn');
+    deleteButton.setAttribute('id', id);
+    deleteButton.addEventListener("click", () => { callDelete(id) });
+    deleteButton.innerHTML = "delete";
 
     // mark as completed
-    markascompleted.classList.add('completedbtn');
-    markascompleted.setAttribute('id', id);
+    markAsCompleted.classList.add('completedbtn');
+    markAsCompleted.setAttribute('id', id);
 
     // appending childs
-    newinnercontainer.appendChild(taskspan);
+    newInnerContainer.appendChild(taskSpan);
     
 
-    newinnercontainer.appendChild(deletebutton);
+    newInnerContainer.appendChild(deleteButton);
 
     if (status == false) {
         // default whilte 
-        newinnercontainer.appendChild(editbutton);  
-        newinnercontainer.appendChild(markascompleted);
-        markascompleted.innerHTML = "mark as completed"
-        markascompleted.addEventListener("click", () => { callmarkascompleted(id) });
+        newInnerContainer.appendChild(editButton);  
+        newInnerContainer.appendChild(markAsCompleted);
+        markAsCompleted.innerHTML = "mark as completed"
+        markAsCompleted.addEventListener("click", () => { callMarkAsCompleted(id) });
     }
     else {
-        newinnercontainer.style.backgroundColor = "lightgreen";
-        newinnercontainer.appendChild(markascompleted);
-        markascompleted.innerHTML = "undo";
-        markascompleted.addEventListener("click", () => { callundo(id) });
+        newInnerContainer.style.backgroundColor = "lightgreen";
+        newInnerContainer.appendChild(markAsCompleted);
+        markAsCompleted.innerHTML = "undo";
+        markAsCompleted.addEventListener("click", () => { callUndo(id) });
     }
     // }
 }
@@ -177,39 +145,20 @@ let z = document.querySelector('.taskedit');
 let y = document.querySelector('.dateedit');
 
 
-// function putvalue(id, taskname, taskdatevalue) {
-//     currentid = id;
-//     z.value = taskname;
-//     // y.innerHTML = taskdatevalue;
-//     y.value = taskdatevalue;
-// }
 
-// function edittask() {
-// for (let x in todo) {
-//     if (todo[x][0] == currentid) {
-//         todo[x][1] = z.value;
-//         todo[x][2] = y.value;
-//     }
-// }
-// localStorage.setItem("mytask", JSON.stringify(todo));
-// console.log(todo);
-
-// displaytaskagain();
-// }
-
-function displaytaskagain() {
-    tasklist.innerHTML = "";
+function displayTask() {
+    taskList.innerHTML = "";
     for (let x in todo) {
-        displaytask(todo[x][0], todo[x][1], todo[x][2], todo[x][3]);
+        createNewContainerForTask(todo[x][0], todo[x][1], todo[x][2], todo[x][3]);
     }
 }
 
-function calldelete(id) {
-    tasklist.innerHTML = "";
+function callDelete(id) {
+    taskList.innerHTML = "";
     // let temp = [];
     // for (let x in todo) {
     //     if(todo[x][0] != id){
-    //         displaytask(todo[x][0], todo[x][1], todo[x][2]);
+    //         displayTask(todo[x][0], todo[x][1], todo[x][2]);
     //     }
     // }
 
@@ -218,10 +167,10 @@ function calldelete(id) {
     localStorage.setItem("mytask", JSON.stringify(todo));
     console.log(todo);
 
-    displaytaskagain();
+    displayTask();
 }
 
-function callmarkascompleted(id) {
+function callMarkAsCompleted(id) {
     for (let x in todo) {
         if (todo[x][0] == id) {
             todo[x][3] = true;
@@ -230,10 +179,10 @@ function callmarkascompleted(id) {
     localStorage.setItem("mytask", JSON.stringify(todo));
     console.log(todo);
 
-    displaytaskagain();
+    displayTask();
 }
 
-function callundo(id) {
+function callUndo(id) {
     for (let x in todo) {
         if (todo[x][0] == id) {
             todo[x][3] = false;
@@ -242,38 +191,38 @@ function callundo(id) {
     localStorage.setItem("mytask", JSON.stringify(todo));
     console.log(todo);
 
-    displaytaskagain();
+    displayTask();
 }
 
-function sortbydate() {
+function sortByDate() {
     todo.sort((a, b) => {
         return new Date(a[2]) - new Date(b[2]);
     });
 
     localStorage.setItem("mytask", JSON.stringify(todo));
-    displaytaskagain();
+    displayTask();
 }
 
-function sortbyname() {
+function sortByName() {
     todo.sort((a, b) => {
         return a[1].localeCompare(b[1]);
     });
 
     localStorage.setItem("mytask", JSON.stringify(todo));
-    displaytaskagain();
+    displayTask();
 }
 
-function callsearch() {
-    let searchtext = document.querySelector('.searchbox').value;
-    console.log(searchtext);
+function search() {
+    let searchText = document.querySelector('.searchbox').value;
+    console.log(searchText);
     let z = todo.filter((x)=>{
-        return x[1].toLowerCase().includes(searchtext.toLowerCase());
+        return x[1].toLowerCase().includes(searchText.toLowerCase());
     })
     console.log(z);
-    tasklist.innerHTML = "";
+    taskList.innerHTML = "";
     for(let i in z){
         console.log(z[i][0]);
         console.log(z[i][1]);
-        displaytask(z[i][0],z[i][1],z[i][2],z[i][3]);
+        createNewContainerForTask(z[i][0],z[i][1],z[i][2],z[i][3]);
     }
 }
